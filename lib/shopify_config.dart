@@ -7,8 +7,6 @@ class ShopifyConfig {
   /// Your own unique access key found on your Shopify dashboard under apps -> manage private apps -> your-app-name .
   static String? _adminAccessToken;
 
-  static String? _customerAccessToken;
-
   /// Your store url.
   ///
   /// eg: "shopname.myshopify.com"
@@ -44,20 +42,18 @@ class ShopifyConfig {
     required String storefrontAccessToken,
     required String storeUrl,
     String? adminAccessToken,
-    String? customerAccessToken,
     String storefrontApiVersion = "2023-07",
   }) {
     _storefrontAccessToken = storefrontAccessToken;
     _adminAccessToken = adminAccessToken;
     _storeUrl = !storeUrl.contains('http') ? 'https://$storeUrl' : storeUrl;
     _storefrontApiVersion = storefrontApiVersion;
-    _customerAccessToken = customerAccessToken;
     _graphQLClient = GraphQLClient(
       link: HttpLink(
         '$_storeUrl/api/$_storefrontApiVersion/graphql.json',
         defaultHeaders: {
           'X-Shopify-Storefront-Access-Token': _storefrontAccessToken!,
-          'X-Shopify-Customer-Access-Token': _customerAccessToken ?? "", //Delete if not work
+          //'X-Shopify-Customer-Access-Token': _customerAccessToken ?? "", //Delete if not work
         },
       ),
       cache: GraphQLCache(),
